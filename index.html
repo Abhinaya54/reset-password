@@ -185,6 +185,34 @@
     togglePassword.addEventListener("click", () => toggleVisibility(passwordInput, togglePassword));
     toggleConfirmPassword.addEventListener("click", () => toggleVisibility(confirmPasswordInput, toggleConfirmPassword));
 
+    // Check if oobCode is valid first
+    const checkCodeValid = async () => {
+      if (!oobCode) {
+        messageDiv.textContent = "Reset link is missing or invalid.";
+        messageDiv.className = "message error";
+        resetBtn.disabled = true;
+        return false;
+      }
+
+      try {
+        await verifyPasswordResetCode(auth, oobCode);
+        return true;
+      } catch (error) {
+        if (error.code === "auth/expired-action-code") {
+          messageDiv.textContent = "Your reset link has expired. Please request a new one.";
+        } else if (error.code === "auth/invalid-action-code") {
+          messageDiv.textContent = "Invalid reset link. Please request a new password reset.";
+        } else {
+          messageDiv.textContent = "Error verifying reset link: " + error.message;
+        }
+        messageDiv.className = "message error";
+        resetBtn.disabled = true;
+        return false;
+      }
+    };
+
+    checkCodeValid();
+
     // Reset password
     resetBtn.addEventListener("click", async () => {
       messageDiv.textContent = "";
@@ -205,31 +233,33 @@
         return;
       }
 
-      if (!oobCode) {
-        messageDiv.textContent = "Invalid or missing reset code.";
+      if (password.length < 6) {
+        messageDiv.textContent = "Password must be at least 6 characters.";
         messageDiv.classList.add("error");
         return;
       }
 
       try {
-        // First, verify the reset code is valid
-        await verifyPasswordResetCode(auth, oobCode);
-
-        // Then, confirm the password reset
         await confirmPasswordReset(auth, oobCode, password);
-
         messageDiv.textContent = "✅ Password reset successful! Redirecting to login...";
         messageDiv.classList.add("success");
 
         passwordInput.value = "";
         confirmPasswordInput.value = "";
 
-        // Redirect to login after 2 seconds
         setTimeout(() => {
           window.location.href = "https://abhinaya54.github.io/login";
         }, 2000);
       } catch (error) {
-        messageDiv.textContent = error.message || "Failed to reset password.";
+        if (error.code === "auth/expired-action-code") {
+          messageDiv.textContent = "Reset link expired. Please request a new one.";
+        } else if (error.code === "auth/invalid-action-code") {
+          messageDiv.textContent = "Invalid reset link. Please request a new one.";
+        } else if (error.code === "auth/user-not-found") {
+          messageDiv.textContent = "User does not exist.";
+        } else {
+          messageDiv.textContent = "Failed to reset password: " + error.message;
+        }
         messageDiv.classList.add("error");
       }
     });
