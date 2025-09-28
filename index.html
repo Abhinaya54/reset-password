@@ -1,145 +1,269 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Reset Password | Instaaid</title>
-<style>
-body {
-  font-family: Arial, sans-serif;
-  background-color: #f5f5f5;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  margin: 0;
-  padding: 20px;
-}
-.container {
-  width: 340px;
-  background: #fff;
-  padding: 30px;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-  text-align: center;
-}
-.logoCircle {
-  width: 64px; height: 64px;
-  border-radius: 50%; background-color: #ff5656;
-  margin: 0 auto 12px;
-  display: flex; justify-content: center; align-items: center;
-  font-size: 36px; color: #fff;
-}
-h2 { margin: 0 0 4px; font-weight: bold; color: #222; }
-p.subtitle { color: #999; font-size: 14px; margin: 0 0 24px; }
-label { display: block; font-weight: bold; margin: 15px 0 6px; color: #222; text-align: left; }
-input {
-  width: 100%; height: 48px; font-size: 16px; border-radius: 12px;
-  border: 1px solid #e4e4e4; padding: 0 12px; box-sizing: border-box;
-  background-color: #fafafa; color: #222;
-}
-.inputWrapper { position: relative; margin-bottom: 15px; }
-.togglePwd {
-  position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
-  cursor: pointer; color: #666; font-size: 18px; user-select: none;
-}
-button {
-  width: 100%; margin-top: 20px; padding: 14px;
-  background-color: #ff5656; border: none; border-radius: 12px;
-  color: white; font-weight: bold; font-size: 17px; cursor: pointer;
-  transition: background-color 0.3s;
-}
-button:hover { background-color: #e64b4b; }
-.message { margin-top: 20px; font-size: 14px; font-weight: bold; }
-.success { color: green; }
-.error { color: red; }
-</style>
+  <meta charset="UTF-8">
+  <title>Reset Password | Instaaid</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f5f5f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .container {
+      width: 340px;
+      background: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      text-align: center;
+    }
+
+    .logoCircle {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background-color: #ff5656;
+      margin: 0 auto 12px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 36px;
+      color: #fff;
+    }
+
+    h2 {
+      margin: 0 0 4px;
+      font-weight: bold;
+      color: #222;
+    }
+
+    p.subtitle {
+      color: #999;
+      font-size: 14px;
+      margin-top: 0;
+      margin-bottom: 24px;
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin: 15px 0 6px;
+      color: #222;
+      text-align: left;
+    }
+
+    input {
+      width: 100%;
+      height: 48px;
+      font-size: 16px;
+      border-radius: 12px;
+      border: 1px solid #e4e4e4;
+      padding: 0 12px;
+      box-sizing: border-box;
+      background-color: #fafafa;
+      color: #222;
+    }
+
+    .inputWrapper {
+      position: relative;
+      margin-bottom: 15px;
+    }
+
+    .togglePwd {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      color: #666;
+      font-size: 18px;
+      user-select: none;
+    }
+
+    button {
+      width: 100%;
+      margin-top: 20px;
+      padding: 14px;
+      background-color: #ff5656;
+      border: none;
+      border-radius: 12px;
+      color: white;
+      font-weight: bold;
+      font-size: 17px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #e64b4b;
+    }
+
+    .message {
+      margin-top: 20px;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    .success {
+      color: green;
+    }
+
+    .error {
+      color: red;
+    }
+  </style>
 </head>
 <body>
-<div class="container">
-  <div class="logoCircle">📱</div>
-  <h2>Set a new password</h2>
-  <p class="subtitle">Create a new password. Ensure it differs from previous ones for security</p>
 
-  <label for="password">Password</label>
-  <div class="inputWrapper">
-    <input type="password" id="password" placeholder="Enter new password" />
-    <span class="togglePwd" id="togglePassword">👁️</span>
+  <div class="container">
+    <div class="logoCircle">📱</div>
+    <h2>Set a new password</h2>
+    <p class="subtitle">Create a new password. Ensure it differs from previous ones for security</p>
+
+    <label for="password">Password</label>
+    <div class="inputWrapper">
+      <input type="password" id="password" placeholder="Enter new password" />
+      <span class="togglePwd" id="togglePassword">👁️</span>
+    </div>
+
+    <label for="confirmPassword">Confirm Password</label>
+    <div class="inputWrapper">
+      <input type="password" id="confirmPassword" placeholder="Confirm new password" />
+      <span class="togglePwd" id="toggleConfirmPassword">👁️</span>
+    </div>
+
+    <button id="resetBtn">Update Password</button>
+
+    <div id="message" class="message"></div>
   </div>
 
-  <label for="confirmPassword">Confirm Password</label>
-  <div class="inputWrapper">
-    <input type="password" id="confirmPassword" placeholder="Confirm new password" />
-    <span class="togglePwd" id="toggleConfirmPassword">👁️</span>
-  </div>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.6.1/firebase-app.js";
+    import { getAuth, verifyPasswordResetCode, confirmPasswordReset } 
+      from "https://www.gstatic.com/firebasejs/10.6.1/firebase-auth.js";
 
-  <button id="resetBtn">Update Password</button>
-  <div id="message" class="message"></div>
-</div>
+    // Firebase config
+    const firebaseConfig = {
+      apiKey: "AIzaSyCaB5v40RxR6i66DWc8gwcAASC4okf60wA",
+      authDomain: "instaaid-43394.firebaseapp.com",
+      projectId: "instaaid-43394",
+      storageBucket: "instaaid-43394.appspot.com",
+      messagingSenderId: "181830039349",
+      appId: "1:181830039349:web:362845743f479d63e6be7c"
+    };
 
-<script type="module">
-// Firebase imports
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
-import { getAuth, verifyPasswordResetCode, confirmPasswordReset } 
-  from "https://www.gstatic.com/firebasejs/10.4.0/firebase-auth.js";
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
 
-// Firebase config
-const firebaseConfig = {
-  apiKey: "your_api key",
-  authDomain: "instaaid-43394.firebaseapp.com",
-  projectId: "instaaid-43394",
-  storageBucket: "instaaid-43394.appspot.com",
-  messagingSenderId: "181830039349",
-  appId: "1:181830039349:web:362845743f479d63e6be7c"
-};
+    const urlParams = new URLSearchParams(window.location.search);
+    const oobCode = urlParams.get("oobCode");
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
+    const passwordInput = document.getElementById("password");
+    const confirmPasswordInput = document.getElementById("confirmPassword");
+    const resetBtn = document.getElementById("resetBtn");
+    const togglePassword = document.getElementById("togglePassword");
+    const toggleConfirmPassword = document.getElementById("toggleConfirmPassword");
+    const messageDiv = document.getElementById("message");
 
-const urlParams = new URLSearchParams(window.location.search);
-const oobCode = urlParams.get("oobCode");
+    // Toggle password visibility
+    const toggleVisibility = (input, toggleBtn) => {
+      if (input.type === "password") {
+        input.type = "text";
+        toggleBtn.textContent = "🙈";
+      } else {
+        input.type = "password";
+        toggleBtn.textContent = "👁️";
+      }
+    };
 
-const passwordInput = document.getElementById("password");
-const confirmPasswordInput = document.getElementById("confirmPassword");
-const resetBtn = document.getElementById("resetBtn");
-const togglePassword = document.getElementById("togglePassword");
-const toggleConfirmPassword = document.getElementById("toggleConfirmPassword");
-const messageDiv = document.getElementById("message");
+    togglePassword.addEventListener("click", () => toggleVisibility(passwordInput, togglePassword));
+    toggleConfirmPassword.addEventListener("click", () => toggleVisibility(confirmPasswordInput, toggleConfirmPassword));
 
-// Toggle password visibility
-const toggleVisibility = (input, toggleBtn) => {
-  if(input.type==="password"){input.type="text"; toggleBtn.textContent="🙈";}
-  else{input.type="password"; toggleBtn.textContent="👁️";}
-};
-togglePassword.addEventListener("click", ()=>toggleVisibility(passwordInput, togglePassword));
-toggleConfirmPassword.addEventListener("click", ()=>toggleVisibility(confirmPasswordInput, toggleConfirmPassword));
+    // Check if oobCode is valid first
+    const checkCodeValid = async () => {
+      if (!oobCode) {
+        messageDiv.textContent = "Reset link is missing or invalid.";
+        messageDiv.className = "message error";
+        resetBtn.disabled = true;
+        return false;
+      }
 
-// Verify oobCode
-const checkCodeValid = async () => {
-  if(!oobCode){ messageDiv.textContent="Reset link missing."; messageDiv.className="message error"; resetBtn.disabled=true; return; }
-  try { await verifyPasswordResetCode(auth,oobCode); }
-  catch(err){ messageDiv.textContent="Invalid or expired link."; messageDiv.className="message error"; resetBtn.disabled=true; }
-};
-checkCodeValid();
+      try {
+        await verifyPasswordResetCode(auth, oobCode);
+        return true;
+      } catch (error) {
+        if (error.code === "auth/expired-action-code") {
+          messageDiv.textContent = "Your reset link has expired. Please request a new one.";
+        } else if (error.code === "auth/invalid-action-code") {
+          messageDiv.textContent = "Invalid reset link. Please request a new password reset.";
+        } else {
+          messageDiv.textContent = "Error verifying reset link: " + error.message;
+        }
+        messageDiv.className = "message error";
+        resetBtn.disabled = true;
+        return false;
+      }
+    };
 
-// Reset password
-resetBtn.addEventListener("click", async ()=>{
-  messageDiv.textContent=""; messageDiv.className="message";
-  const password = passwordInput.value.trim();
-  const confirmPassword = confirmPasswordInput.value.trim();
-  if(!password||!confirmPassword){ messageDiv.textContent="Fill both fields."; messageDiv.classList.add("error"); return; }
-  if(password!==confirmPassword){ messageDiv.textContent="Passwords do not match."; messageDiv.classList.add("error"); return; }
-  if(password.length<6){ messageDiv.textContent="Password must be 6+ chars."; messageDiv.classList.add("error"); return; }
-  try{
-    await confirmPasswordReset(auth,oobCode,password);
-    messageDiv.textContent="✅ Password reset successful! Redirecting...";
-    messageDiv.classList.add("success");
-    passwordInput.value=""; confirmPasswordInput.value="";
-    setTimeout(()=>{ window.location.href="https://abhinaya54.github.io/login"; },2000);
-  }catch(err){
-    messageDiv.textContent="Error: "+err.message; messageDiv.classList.add("error");
-  }
-});
-</script>
+    checkCodeValid();
+
+    // Reset password
+    resetBtn.addEventListener("click", async () => {
+      messageDiv.textContent = "";
+      messageDiv.className = "message";
+
+      const password = passwordInput.value.trim();
+      const confirmPassword = confirmPasswordInput.value.trim();
+
+      if (!password || !confirmPassword) {
+        messageDiv.textContent = "Please fill both password fields.";
+        messageDiv.classList.add("error");
+        return;
+      }
+
+      if (password !== confirmPassword) {
+        messageDiv.textContent = "Passwords do not match.";
+        messageDiv.classList.add("error");
+        return;
+      }
+
+      if (password.length < 6) {
+        messageDiv.textContent = "Password must be at least 6 characters.";
+        messageDiv.classList.add("error");
+        return;
+      }
+
+      try {
+        await confirmPasswordReset(auth, oobCode, password);
+        messageDiv.textContent = "✅ Password reset successful! Redirecting to login...";
+        messageDiv.classList.add("success");
+
+        passwordInput.value = "";
+        confirmPasswordInput.value = "";
+
+        setTimeout(() => {
+          window.location.href = "https://abhinaya54.github.io/login";
+        }, 2000);
+      } catch (error) {
+        if (error.code === "auth/expired-action-code") {
+          messageDiv.textContent = "Reset link expired. Please request a new one.";
+        } else if (error.code === "auth/invalid-action-code") {
+          messageDiv.textContent = "Invalid reset link. Please request a new one.";
+        } else if (error.code === "auth/user-not-found") {
+          messageDiv.textContent = "User does not exist.";
+        } else {
+          messageDiv.textContent = "Failed to reset password: " + error.message;
+        }
+        messageDiv.classList.add("error");
+      }
+    });
+  </script>
+
 </body>
 </html>
-
