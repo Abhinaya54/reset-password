@@ -1,61 +1,124 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <title>Reset Password</title>
+  <meta charset="UTF-8" />
+  <title>Reset Password | Instaaid</title>
   <style>
     body {
       font-family: Arial, sans-serif;
+      background-color: #fff;
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
-      background-color: #f5f5f5;
+      margin: 0;
+      padding: 20px;
     }
     .container {
-      background: white;
+      width: 320px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+      border-radius: 12px;
       padding: 30px;
-      border-radius: 8px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+      box-sizing: border-box;
       text-align: center;
-      width: 300px;
+    }
+    .logoCircle {
+      width: 64px;
+      height: 64px;
+      border-radius: 32px;
+      background-color: #ff5656;
+      margin: 0 auto 12px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      font-size: 36px;
+    }
+    h2 {
+      margin: 0 0 4px;
+      font-weight: bold;
+      color: #222;
+    }
+    p.subtitle {
+      color: #999;
+      font-size: 14px;
+      margin-top: 0;
+      margin-bottom: 24px;
+    }
+    label {
+      display: block;
+      font-weight: bold;
+      margin: 15px 0 6px;
+      color: #222;
+      text-align: left;
     }
     input {
       width: 100%;
-      padding: 10px;
-      margin-bottom: 20px;
-      border-radius: 5px;
-      border: 1px solid #ccc;
+      height: 48px;
       font-size: 16px;
+      border-radius: 12px;
+      border: 1px solid #e4e4e4;
+      padding: 0 12px;
+      box-sizing: border-box;
+      background-color: #fafafa;
+      color: #222;
+    }
+    .inputWrapper {
+      position: relative;
+    }
+    .togglePwd {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      color: #666;
+      font-size: 18px;
+      user-select: none;
     }
     button {
       width: 100%;
-      padding: 10px;
+      margin-top: 28px;
+      padding: 16px;
+      background-color: #ff5656;
       border: none;
-      background-color: #2196F3;
+      border-radius: 12px;
       color: white;
-      font-size: 16px;
-      border-radius: 5px;
+      font-weight: bold;
+      font-size: 17px;
       cursor: pointer;
     }
     button:hover {
-      background-color: #1976D2;
+      background-color: #e64b4b;
     }
   </style>
 </head>
 <body>
+
   <div class="container">
-    <h2>Reset Your Password</h2>
-    <input type="password" id="newPassword" placeholder="Enter new password" />
-    <button onclick="resetPassword()">Reset Password</button>
+    <div class="logoCircle">📱</div>
+    <h2>Set a new password</h2>
+    <p class="subtitle">Create a new password. Ensure it differs from previous ones for security</p>
+
+    <label for="password">Password</label>
+    <div class="inputWrapper">
+      <input type="password" id="password" placeholder="Enter new password" />
+      <span class="togglePwd" id="togglePassword">👁️</span>
+    </div>
+
+    <label for="confirmPassword">Confirm Password</label>
+    <div class="inputWrapper">
+      <input type="password" id="confirmPassword" placeholder="Confirm new password" />
+      <span class="togglePwd" id="toggleConfirmPassword">👁️</span>
+    </div>
+
+    <button id="resetBtn">Update Password</button>
   </div>
 
   <script type="module">
-    // Import Firebase
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.6.1/firebase-app.js";
     import { getAuth, confirmPasswordReset } from "https://www.gstatic.com/firebasejs/10.6.1/firebase-auth.js";
 
-    // 🔑 Replace these values with your actual Firebase project config
     const firebaseConfig = {
       apiKey: "AIzaSyCaB5v40RxR6i66DWc8gwcAASC4okf60wA",
       authDomain: "instaaid-43394.firebaseapp.com",
@@ -68,24 +131,63 @@
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
 
-    // Get oobCode from URL (sent in Firebase reset email)
     const urlParams = new URLSearchParams(window.location.search);
-    const oobCode = urlParams.get('oobCode');
+    const oobCode = urlParams.get("oobCode");
 
-    // Reset password function
-    window.resetPassword = async () => {
-      const newPassword = document.getElementById('newPassword').value;
-      if (!newPassword) return alert("Enter a new password");
+    const passwordInput = document.getElementById("password");
+    const confirmPasswordInput = document.getElementById("confirmPassword");
+    const resetBtn = document.getElementById("resetBtn");
+
+    const togglePassword = document.getElementById("togglePassword");
+    const toggleConfirmPassword = document.getElementById("toggleConfirmPassword");
+
+    togglePassword.addEventListener("click", () => {
+      if (passwordInput.type === "password") {
+        passwordInput.type = "text";
+        togglePassword.textContent = "🙈";
+      } else {
+        passwordInput.type = "password";
+        togglePassword.textContent = "👁️";
+      }
+    });
+
+    toggleConfirmPassword.addEventListener("click", () => {
+      if (confirmPasswordInput.type === "password") {
+        confirmPasswordInput.type = "text";
+        toggleConfirmPassword.textContent = "🙈";
+      } else {
+        confirmPasswordInput.type = "password";
+        toggleConfirmPassword.textContent = "👁️";
+      }
+    });
+
+    resetBtn.addEventListener("click", async () => {
+      const password = passwordInput.value;
+      const confirmPassword = confirmPasswordInput.value;
+
+      if (!password || !confirmPassword) {
+        alert("Please fill both password fields.");
+        return;
+      }
+      if (password !== confirmPassword) {
+        alert("Passwords do not match.");
+        return;
+      }
+      if (!oobCode) {
+        alert("Invalid or missing reset code.");
+        return;
+      }
 
       try {
-        await confirmPasswordReset(auth, oobCode, newPassword);
+        await confirmPasswordReset(auth, oobCode, password);
         alert("Password reset successful! You can now log in.");
-        // Optionally redirect to login page
-        // window.location.href = "https://yourapp.com/login";
-      } catch (err) {
-        alert(err.message);
+        // Optional redirect:
+        // window.location.href = "https://your-login-page.com";
+      } catch (error) {
+        alert(error.message || "Failed to reset password.");
       }
-    };
+    });
   </script>
+
 </body>
 </html>
