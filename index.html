@@ -107,8 +107,11 @@
     .message {
       margin-top: 20px;
       font-size: 14px;
-      color: green;
       font-weight: bold;
+    }
+
+    .success {
+      color: green;
     }
 
     .error {
@@ -142,7 +145,8 @@
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.6.1/firebase-app.js";
-    import { getAuth, confirmPasswordReset } from "https://www.gstatic.com/firebasejs/10.6.1/firebase-auth.js";
+    import { getAuth, verifyPasswordResetCode, confirmPasswordReset } 
+      from "https://www.gstatic.com/firebasejs/10.6.1/firebase-auth.js";
 
     // Firebase config
     const firebaseConfig = {
@@ -168,29 +172,24 @@
     const messageDiv = document.getElementById("message");
 
     // Toggle password visibility
-    togglePassword.addEventListener("click", () => {
-      if (passwordInput.type === "password") {
-        passwordInput.type = "text";
-        togglePassword.textContent = "🙈";
+    const toggleVisibility = (input, toggleBtn) => {
+      if (input.type === "password") {
+        input.type = "text";
+        toggleBtn.textContent = "🙈";
       } else {
-        passwordInput.type = "password";
-        togglePassword.textContent = "👁️";
+        input.type = "password";
+        toggleBtn.textContent = "👁️";
       }
-    });
+    };
 
-    toggleConfirmPassword.addEventListener("click", () => {
-      if (confirmPasswordInput.type === "password") {
-        confirmPasswordInput.type = "text";
-        toggleConfirmPassword.textContent = "🙈";
-      } else {
-        confirmPasswordInput.type = "password";
-        toggleConfirmPassword.textContent = "👁️";
-      }
-    });
+    togglePassword.addEventListener("click", () => toggleVisibility(passwordInput, togglePassword));
+    toggleConfirmPassword.addEventListener("click", () => toggleVisibility(confirmPasswordInput, toggleConfirmPassword));
 
     // Reset password
     resetBtn.addEventListener("click", async () => {
       messageDiv.textContent = "";
+      messageDiv.className = "message";
+
       const password = passwordInput.value.trim();
       const confirmPassword = confirmPasswordInput.value.trim();
 
@@ -213,13 +212,22 @@
       }
 
       try {
+        // First, verify the reset code is valid
+        await verifyPasswordResetCode(auth, oobCode);
+
+        // Then, confirm the password reset
         await confirmPasswordReset(auth, oobCode, password);
-        messageDiv.textContent = "✅ Password reset successful! You can now log in.";
-        messageDiv.classList.remove("error");
+
+        messageDiv.textContent = "✅ Password reset successful! Redirecting to login...";
+        messageDiv.classList.add("success");
+
         passwordInput.value = "";
         confirmPasswordInput.value = "";
-        // Optional redirect:
-        // setTimeout(() => { window.location.href = "https://your-login-page.com"; }, 2000);
+
+        // Redirect to login after 2 seconds
+        setTimeout(() => {
+          window.location.href = "https://abhinaya54.github.io/login";
+        }, 2000);
       } catch (error) {
         messageDiv.textContent = error.message || "Failed to reset password.";
         messageDiv.classList.add("error");
@@ -229,4 +237,3 @@
 
 </body>
 </html>
-  
